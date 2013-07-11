@@ -1,5 +1,5 @@
 var stubs = require("./helpers/stubs");
-var htmlFetcherHelpers = require("../workers/lib/html-fetcher-helpers");
+var htmlFetcherHelpers = require("../workers/compiled/src/lib/html-fetcher-helpers");
 var fs = require("fs");
 
 describe("html fetcher helpers", function(){
@@ -9,18 +9,18 @@ describe("html fetcher helpers", function(){
 
     fs.writeFileSync(__dirname + "/testdata/sites.txt", urlArray.join("\n"));
 
-    var resultArray = [];
-    var result = htmlFetcherHelpers.readUrls(urlArray, function(urls){
-      resultArray.push(urls);
+    // var resultArray = [];
+    var result = htmlFetcherHelpers.readUrls(__dirname + "/testdata/sites.txt", function(urls){
+      return urls;
     });
 
     waits(200);
     runs(function(){
-      expect(resultArray).toEqual(urlArray);
+      expect(result).toEqual(urlArray);
     });
   });
   
-  xit("should have a 'downloadUrls' function", function(){
+  it("should have a 'downloadUrls' function", function(){
     var result = htmlFetcherHelpers.downloadUrls();
     expect(result).toBeTruthy();
   });
